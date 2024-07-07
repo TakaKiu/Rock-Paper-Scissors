@@ -1,10 +1,11 @@
+// App.js
 import React, { useState } from 'react';
-import './App.css'; 
-import RockPaperScissors from './RockPaperScissors'; 
+import './App.css'; // Import your CSS file for styling
+import RockPaperScissors from './RockPaperScissors'; // Import the game logic
 
 const App = () => {
   const [username, setUsername] = useState('');
-  const [game, setGame] = useState(null); // Game instance
+  const [game, setGame] = useState(null);
   const [userSelection, setUserSelection] = useState('');
   const [score, setScore] = useState({ user: 0, cpu: 0 });
   const [gameHistory, setGameHistory] = useState([]);
@@ -19,18 +20,34 @@ const App = () => {
 
   const playGame = (selectedOption) => {
     if (game) {
-      game.play(selectedOption);
-      setScore({ user: game.score.user, cpu: game.score.cpu });
-      setGameHistory([...game.gameHistoryLog]);
+      const { result, cpuSelection, logEntry, score: updatedScore } = game.play(selectedOption);
+      setScore(updatedScore);
+      setGameHistory([...gameHistory, logEntry]);
+      setUserSelection(selectedOption); // Optionally update user selection state
     }
+  };
+
+  const resetGame = () => {
+    setGame(null);
+    setUsername('');
+    setScore({ user: 0, cpu: 0 });
+    setGameHistory([]);
   };
 
   return (
     <div className="App">
+      <header className="App-header">
+        <h1>Rock Paper Scissors Game</h1>
+      </header>
       {game ? (
         <div className="game-container">
           <h2>Welcome, {username}!</h2>
-          <p>Score: {username}: {score.user} vs CPU: {score.cpu}</p>
+          <p>Score: {score.user} - {score.cpu}</p>
+          <div className="game-options">
+            <button onClick={() => playGame('rock')}>Rock</button>
+            <button onClick={() => playGame('paper')}>Paper</button>
+            <button onClick={() => playGame('scissors')}>Scissors</button>
+          </div>
           <div className="game-history">
             <h3>Game History</h3>
             <ul>
@@ -39,11 +56,7 @@ const App = () => {
               ))}
             </ul>
           </div>
-          <div className="game-options">
-            <button onClick={() => playGame('rock')}>Rock</button>
-            <button onClick={() => playGame('paper')}>Paper</button>
-            <button onClick={() => playGame('scissors')}>Scissors</button>
-          </div>
+          <button onClick={resetGame}>Reset Game</button>
         </div>
       ) : (
         <div className="start-container">
@@ -62,3 +75,4 @@ const App = () => {
 };
 
 export default App;
+
