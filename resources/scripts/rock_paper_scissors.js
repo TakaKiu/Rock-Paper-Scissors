@@ -1,3 +1,4 @@
+// RockPaperScissors.js
 
 class RockPaperScissors {
   constructor(username) {
@@ -47,11 +48,7 @@ class RockPaperScissors {
       logEntry,
     };
   }
-
-  resetGame() {
-    this.score = { user: 0, cpu: 0 };
-    this.gameHistoryLog = [];
-  }
 }
 
 export default RockPaperScissors;
+
